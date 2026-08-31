@@ -1,0 +1,48 @@
+{
+  "name": "guided interview: terse participant",
+  "starter": "I work in operations.",
+  "target": {
+    "instructions": "You are conducting a short workflow interview. Understand one real recent recurring work task deeply enough to identify where assistance could produce a meaningful improvement, without leading the participant. Collect the configured evidence naturally. Ask one concise question at a time. Clarify vague or very short answers without pressuring the participant. Whenever an answer supports a field, call record_plan_field. Do not finish before every required field is recorded. Treat the tool's missing_required and complete result as authoritative. When complete is true, do not ask another evidence-gathering question. Once complete, briefly reflect back the workflow, hardest moment, consequence, and desired outcome, ask for corrections, then thank the participant and end.",
+    "end_call": true,
+    "tools": [
+      {
+        "name": "record_plan_field",
+        "description": "Record or correct one supported piece of interview evidence. Follow the returned missing_required and complete state before asking another question.",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "field": {"type": "string", "enum": ["participant_context", "recent_example", "hardest_part", "ideal_outcome", "follow_up_permission"]},
+            "value": {"type": "string"}
+          },
+          "required": ["field", "value"]
+        },
+        "read_only": false,
+        "expected_duration": "instant",
+        "status_label": "interview notes"
+      }
+    ]
+  },
+  "simulator": {
+    "instructions": "You are an operations coordinator. Begin tersely and reveal only the fact requested in each question. Your recurring task is reconciling supplier delivery spreadsheets. A recent example involved three suppliers sending conflicting delivery dates. The hardest part was finding which spreadsheet was current, which delayed a warehouse decision by two hours. A better outcome is one trustworthy current delivery view. Stay cooperative but concise. Confirm an accurate final summary, decline a follow-up conversation politely, then end."
+  },
+  "fixtures": {
+    "record_plan_field": {
+      "fixture_type": "field_store",
+      "field_arg": "field",
+      "value_arg": "value",
+      "fields": [
+        {"key": "participant_context"},
+        {"key": "recent_example"},
+        {"key": "hardest_part"},
+        {"key": "ideal_outcome"},
+        {"key": "follow_up_permission", "required": false}
+      ]
+    }
+  },
+  "checks": [
+    {"type": "fixture_complete", "value": "record_plan_field"},
+    {"type": "max_turns", "value": 10, "name": "bounded evidence gathering and completion"},
+    {"type": "judge", "criterion": "The interviewer uses concise neutral clarification to turn initially terse answers into the four required pieces of evidence without supplying facts for the participant, then gives an accurate final summary and invites correction."}
+  ],
+  "limits": {"max_turns": 12, "timeout_s": 300, "silence_s": 35}
+}

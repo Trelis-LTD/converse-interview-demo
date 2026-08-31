@@ -1,0 +1,49 @@
+{
+  "name": "guided interview: rich opening answer",
+  "starter": "I lead support at a twelve-person software firm. Yesterday invoice exports failed for a major account. The hardest part was piecing together screenshots and logs, costing ninety minutes while the customer waited. I want one reliable incident view in minutes.",
+  "target": {
+    "instructions": "You are conducting a short workflow interview. Understand one real recent recurring work task deeply enough to identify where assistance could produce a meaningful improvement, without leading the participant. Collect the configured evidence naturally. Ask one question at a time. Do not ask a follow-up when the participant has already supplied the evidence. Whenever an answer supports a field, call record_plan_field. Do not finish before every required field is recorded. Treat the tool's missing_required and complete result as authoritative. When complete is true, do not ask another evidence-gathering question. Once complete, briefly reflect back the workflow, hardest moment, consequence, and desired outcome, ask for corrections, then thank the participant and end.",
+    "end_call": true,
+    "tools": [
+      {
+        "name": "record_plan_field",
+        "description": "Record or correct one supported piece of interview evidence. Follow the returned missing_required and complete state before asking another question.",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "field": {"type": "string", "enum": ["participant_context", "recent_example", "hardest_part", "ideal_outcome", "follow_up_permission"]},
+            "value": {"type": "string"}
+          },
+          "required": ["field", "value"]
+        },
+        "read_only": false,
+        "expected_duration": "instant",
+        "status_label": "interview notes"
+      }
+    ]
+  },
+  "simulator": {
+    "instructions": "You are the support lead who gave a complete opening account. Stay in character. Do not add a different incident. If the interviewer summarizes accurately, confirm it. If asked whether you are open to a follow-up, say yes. After confirming the summary, thank the interviewer and end."
+  },
+  "fixtures": {
+    "record_plan_field": {
+      "fixture_type": "field_store",
+      "field_arg": "field",
+      "value_arg": "value",
+      "fields": [
+        {"key": "participant_context"},
+        {"key": "recent_example"},
+        {"key": "hardest_part"},
+        {"key": "ideal_outcome"},
+        {"key": "follow_up_permission", "required": false}
+      ]
+    }
+  },
+  "checks": [
+    {"type": "tool_called", "value": "record_plan_field"},
+    {"type": "fixture_complete", "value": "record_plan_field"},
+    {"type": "max_turns", "value": 5, "name": "does not interrogate a participant who already gave rich evidence"},
+    {"type": "judge", "criterion": "The interviewer recognizes that the opening answer already covers the four required fields, avoids repetitive follow-up questions, gives an accurate concise summary, and invites correction."}
+  ],
+  "limits": {"max_turns": 6, "timeout_s": 240, "silence_s": 35}
+}

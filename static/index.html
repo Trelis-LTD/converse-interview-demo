@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Short workflow interview</title>
+    <meta name="description" content="A short guided voice interview powered by Trelis Converse.">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/static/styles.css">
+  </head>
+  <body>
+    <main class="container py-4 py-lg-5">
+      <div class="row justify-content-center">
+        <div class="col-xl-10">
+          <header class="mb-4">
+            <p class="eyebrow mb-2">Powered by Trelis Converse</p>
+            <h1 class="display-5 mb-3">A three-minute workflow interview</h1>
+            <p class="lead text-secondary mb-0">Talk through one recent task. The assistant will
+              ask concise follow-ups, capture the important points, and summarize what it heard.</p>
+          </header>
+
+          <div id="setup-alert" class="alert alert-warning d-none" role="alert"></div>
+
+          <div class="row g-4">
+            <section class="col-lg-7">
+              <div class="card interview-card h-100">
+                <div class="card-body p-4">
+                  <div class="d-flex flex-wrap align-items-center justify-content-between gap-3 mb-4">
+                    <div>
+                      <span id="status-dot" class="status-dot" aria-hidden="true"></span>
+                      <span id="status" class="fw-semibold">Ready to begin</span>
+                    </div>
+                    <span class="badge rounded-pill text-bg-light">Voice interview</span>
+                  </div>
+
+                  <div id="transcript" class="transcript mb-4" aria-live="polite">
+                    <div class="empty-state">Your conversation will appear here.</div>
+                  </div>
+
+                  <div class="d-flex gap-2">
+                    <button id="start" class="btn btn-primary btn-lg flex-grow-1">Start interview</button>
+                    <button id="end" class="btn btn-outline-secondary btn-lg d-none">End</button>
+                  </div>
+                  <p class="small text-secondary mt-3 mb-0">Your browser will ask for microphone
+                    access. Headphones give the most reliable experience.</p>
+                </div>
+              </div>
+            </section>
+
+            <aside class="col-lg-5">
+              <div class="card progress-card h-100">
+                <div class="card-body p-4">
+                  <div class="d-flex align-items-center justify-content-between mb-3">
+                    <h2 class="h5 mb-0">Interview progress</h2>
+                    <span id="progress-count" class="small text-secondary">0 of 4</span>
+                  </div>
+                  <div class="progress mb-4" role="progressbar" aria-label="Interview progress" aria-valuemin="0" aria-valuemax="100">
+                    <div id="progress-bar" class="progress-bar" style="width: 0%"></div>
+                  </div>
+                  <div id="fields"></div>
+                </div>
+              </div>
+            </aside>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <script type="module" src="/static/app.js"></script>
+  </body>
+</html>

@@ -1,0 +1,47 @@
+{
+  "name": "guided interview: participant correction",
+  "starter": "I manage a four-person recruiting team, and last week our candidate scheduling process broke down and affected five candidates.",
+  "target": {
+    "instructions": "You are conducting a short workflow interview. Understand one real recent recurring work task deeply enough to identify where assistance could produce a meaningful improvement, without leading the participant. Collect the configured evidence naturally. Ask one question at a time. Whenever an answer supports a field, call record_plan_field. If the participant corrects earlier evidence, immediately update that field using the same tool and use the corrected fact from then on. Do not finish before every required field is recorded. Treat the tool's missing_required and complete result as authoritative. When complete is true, do not ask another evidence-gathering question. Once complete, briefly reflect back the workflow, hardest moment, consequence, and desired outcome, ask for corrections, then thank the participant and end.",
+    "end_call": true,
+    "tools": [
+      {
+        "name": "record_plan_field",
+        "description": "Record or correct one supported piece of interview evidence. Follow the returned missing_required and complete state before asking another question.",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "field": {"type": "string", "enum": ["participant_context", "recent_example", "hardest_part", "ideal_outcome", "follow_up_permission"]},
+            "value": {"type": "string"}
+          },
+          "required": ["field", "value"]
+        },
+        "read_only": false,
+        "expected_duration": "instant",
+        "status_label": "interview notes"
+      }
+    ]
+  },
+  "simulator": {
+    "instructions": "You manage a four-person recruiting team. The opening message incorrectly said five candidates. Your first spoken response to any assistant question must begin by correcting that fact clearly: it was eight candidates, not five. Then answer the question naturally. The hardest part was identifying who had received which time, causing two missed interviews. When asked about a better outcome, say you want one confirmed schedule that notifies everyone automatically. Say that you are open to a follow-up conversation. Keep responding normally and do not request to end until you have stated that desired outcome and heard the interviewer's final summary. Confirm only a final summary that uses eight candidates. If it still says five, correct it again. After an accurate summary, thank the interviewer and end."
+  },
+  "fixtures": {
+    "record_plan_field": {
+      "fixture_type": "field_store",
+      "field_arg": "field",
+      "value_arg": "value",
+      "fields": [
+        {"key": "participant_context"},
+        {"key": "recent_example"},
+        {"key": "hardest_part"},
+        {"key": "ideal_outcome"},
+        {"key": "follow_up_permission", "required": false}
+      ]
+    }
+  },
+  "checks": [
+    {"type": "fixture_complete", "value": "record_plan_field"},
+    {"type": "judge", "criterion": "The interviewer accepts the correction from five candidates to eight without resistance and never uses five as the current number afterward. If it repeats or summarizes the count, it uses eight. A spoken repetition of the corrected number is not required."}
+  ],
+  "limits": {"max_turns": 10, "timeout_s": 300, "silence_s": 35}
+}

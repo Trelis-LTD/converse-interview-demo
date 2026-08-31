@@ -1,0 +1,48 @@
+{
+  "name": "guided interview: explicit early stop",
+  "starter": "I need to stop this interview now.",
+  "target": {
+    "instructions": "You are conducting a short workflow interview. Understand one real recent recurring work task deeply enough to identify where assistance could produce a meaningful improvement, without leading the participant. Collect the configured evidence naturally and call record_plan_field whenever an answer supports a field. Treat the tool's missing_required and complete result as authoritative. If the participant asks to stop or end the interview at any point, stop gathering evidence and immediately call end_call with a brief respectful farewell, even if required fields are still missing. Never say goodbye or imply that the session has ended without calling end_call.",
+    "end_call": true,
+    "tools": [
+      {
+        "name": "record_plan_field",
+        "description": "Record or correct one supported piece of interview evidence. Follow the returned missing_required and complete state before asking another question.",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "field": {"type": "string", "enum": ["participant_context", "recent_example", "hardest_part", "ideal_outcome", "follow_up_permission"]},
+            "value": {"type": "string"}
+          },
+          "required": ["field", "value"]
+        },
+        "read_only": false,
+        "expected_duration": "instant",
+        "status_label": "interview notes"
+      }
+    ]
+  },
+  "simulator": {
+    "instructions": "You need to stop the interview immediately and have already said so in the opening message. Do not provide interview evidence. If the interviewer asks any question or continues gathering evidence, repeat that you need to stop now. Once the interviewer gives a brief farewell and ends the session, remain silent."
+  },
+  "fixtures": {
+    "record_plan_field": {
+      "fixture_type": "field_store",
+      "field_arg": "field",
+      "value_arg": "value",
+      "fields": [
+        {"key": "participant_context"},
+        {"key": "recent_example"},
+        {"key": "hardest_part"},
+        {"key": "ideal_outcome"},
+        {"key": "follow_up_permission", "required": false}
+      ]
+    }
+  },
+  "checks": [
+    {"type": "tool_called", "value": "end_call"},
+    {"type": "max_turns", "value": 2, "name": "ends immediately after an explicit stop request"},
+    {"type": "judge", "criterion": "The interviewer immediately respects the explicit request to stop, asks no interview or evidence-gathering question, gives only a brief respectful farewell, and ends the session."}
+  ],
+  "limits": {"max_turns": 3, "timeout_s": 180, "silence_s": 30}
+}

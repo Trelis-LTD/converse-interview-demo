@@ -1,0 +1,48 @@
+{
+  "name": "guided interview: optional question refused",
+  "starter": "I run finance for a fifteen-person agency. Last Friday three late timesheets delayed invoicing by a day. Checking chats and spreadsheets cost me two hours. I want one view with automatic reminders. I am happy to do this interview, but I do not want a follow-up conversation.",
+  "target": {
+    "instructions": "You are conducting a short workflow interview. Understand one real recent recurring work task deeply enough to identify where assistance could produce a meaningful improvement, without leading the participant. Collect the configured evidence naturally. Ask one question at a time. Whenever an answer supports a field, call record_plan_field. The follow-up permission field is optional. If the participant declines it, accept that immediately, record the refusal, never ask again, and complete the interview normally. Do not finish before every required field is recorded. Treat the tool's missing_required and complete result as authoritative. When complete is true, do not ask another evidence-gathering question. Once complete, briefly reflect back the workflow, hardest moment, consequence, and desired outcome, ask for corrections, then thank the participant and end.",
+    "end_call": true,
+    "tools": [
+      {
+        "name": "record_plan_field",
+        "description": "Record or correct one supported piece of interview evidence. Follow the returned missing_required and complete state before asking another question.",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "field": {"type": "string", "enum": ["participant_context", "recent_example", "hardest_part", "ideal_outcome", "follow_up_permission"]},
+            "value": {"type": "string"}
+          },
+          "required": ["field", "value"]
+        },
+        "read_only": false,
+        "expected_duration": "instant",
+        "status_label": "interview notes"
+      }
+    ]
+  },
+  "simulator": {
+    "instructions": "You run finance for a fifteen-person agency. The opening message already supplies the full recent example, impact, desired outcome, and a clear refusal of follow-up permission. If asked for follow-up permission again, say no politely and point out that you already answered. Otherwise answer any clarification consistently without inventing a different workflow. Do not request to end until after you have responded to the interviewer's final summary. Confirm an accurate final summary, thank the interviewer, then end."
+  },
+  "fixtures": {
+    "record_plan_field": {
+      "fixture_type": "field_store",
+      "field_arg": "field",
+      "value_arg": "value",
+      "fields": [
+        {"key": "participant_context"},
+        {"key": "recent_example"},
+        {"key": "hardest_part"},
+        {"key": "ideal_outcome"},
+        {"key": "follow_up_permission", "required": false}
+      ]
+    }
+  },
+  "checks": [
+    {"type": "fixture_complete", "value": "record_plan_field"},
+    {"type": "max_turns", "value": 9},
+    {"type": "judge", "criterion": "The interviewer gathers all required evidence, treats follow-up permission as optional, does not ask again or pressure the participant after their refusal, and proceeds to an accurate summary with an invitation to correct it. Explicitly repeating the refusal is not required."}
+  ],
+  "limits": {"max_turns": 10, "timeout_s": 300, "silence_s": 35}
+}

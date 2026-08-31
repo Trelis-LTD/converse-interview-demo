@@ -1,0 +1,148 @@
+:root {
+  --ink: #16221b;
+  --muted: #68756d;
+  --paper: #f5f3ec;
+  --card: #fffefb;
+  --accent: #1f6f54;
+  --accent-soft: #dcebe4;
+  --line: #dfe4df;
+}
+body {
+  min-height: 100vh;
+  color: var(--ink);
+  background:
+    radial-gradient(circle at top right, rgba(54, 139, 104, 0.14), transparent 34rem),
+    var(--paper);
+}
+
+.eyebrow {
+  color: var(--accent);
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.card {
+  border: 1px solid rgba(22, 34, 27, 0.09);
+  border-radius: 1.25rem;
+  background: var(--card);
+  box-shadow: 0 1rem 3rem rgba(32, 49, 39, 0.08);
+}
+
+.status-dot {
+  display: inline-block;
+  width: 0.7rem;
+  height: 0.7rem;
+  margin-right: 0.5rem;
+  border-radius: 50%;
+  background: #9aa59f;
+}
+
+.status-dot.active {
+  background: #2d9f70;
+  box-shadow: 0 0 0 0.3rem rgba(45, 159, 112, 0.14);
+}
+
+.status-dot.error {
+  background: #c84d4d;
+}
+
+.transcript {
+  height: 28rem;
+  padding: 1rem;
+  overflow-y: auto;
+  border: 1px solid var(--line);
+  border-radius: 1rem;
+  background: #fafaf7;
+}
+
+.empty-state {
+  display: grid;
+  min-height: 100%;
+  place-items: center;
+  color: var(--muted);
+  text-align: center;
+}
+
+.turn {
+  max-width: 88%;
+  margin-bottom: 0.85rem;
+  padding: 0.75rem 0.9rem;
+  border-radius: 0.9rem;
+  line-height: 1.45;
+}
+
+.turn.assistant {
+  margin-right: auto;
+  background: var(--accent-soft);
+}
+
+.turn.user {
+  margin-left: auto;
+  background: #ecece7;
+}
+
+.turn-label {
+  display: block;
+  margin-bottom: 0.2rem;
+  color: var(--muted);
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+}
+
+.field-row {
+  padding: 0.85rem 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.field-row:last-child {
+  border-bottom: 0;
+}
+
+.field-check {
+  display: grid;
+  flex: 0 0 auto;
+  width: 1.5rem;
+  height: 1.5rem;
+  place-items: center;
+  border: 1px solid #b9c2bc;
+  border-radius: 50%;
+  color: transparent;
+  font-size: 0.8rem;
+}
+
+.field-row.complete .field-check {
+  border-color: var(--accent);
+  color: white;
+  background: var(--accent);
+}
+
+.field-answer {
+  display: -webkit-box;
+  overflow: hidden;
+  color: var(--muted);
+  font-size: 0.85rem;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.btn-primary,
+.progress-bar {
+  border-color: var(--accent);
+  background-color: var(--accent);
+}
+
+.btn-primary:hover,
+.btn-primary:focus {
+  border-color: #15543e;
+  background-color: #15543e;
+}
+
+@media (max-width: 991px) {
+  .transcript {
+    height: 22rem;
+  }
+}

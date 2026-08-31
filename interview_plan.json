@@ -1,0 +1,34 @@
+{
+  "name": "a short workflow interview",
+  "objective": "Understand one real recent recurring work task deeply enough to identify where assistance could produce a meaningful improvement, without leading the participant toward a predetermined solution.",
+  "greeting": "Thanks for joining me. To start, what is your role, and what kind of work fills most of your week?",
+  "completion": "Briefly reflect back the participant's workflow, hardest moment, consequence, and desired outcome. Ask them to correct anything important. After they confirm or correct the summary, thank them and end the interview.",
+  "fields": [
+    {
+      "key": "participant_context",
+      "label": "Your context",
+      "description": "The participant's role, responsibilities, and relevant working context."
+    },
+    {
+      "key": "recent_example",
+      "label": "Recent example",
+      "description": "One concrete recent example of a recurring task, including what triggered it and what happened."
+    },
+    {
+      "key": "hardest_part",
+      "label": "Hardest part",
+      "description": "The hardest moment in that example and an observable consequence in time, quality, cost, stress, or risk."
+    },
+    {
+      "key": "ideal_outcome",
+      "label": "Better outcome",
+      "description": "What a materially better outcome would look like, stated without prescribing a particular feature."
+    },
+    {
+      "key": "follow_up_permission",
+      "label": "Follow-up permission",
+      "description": "Whether the participant would be open to a follow-up conversation.",
+      "required": false
+    }
+  ]
+}
