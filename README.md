@@ -4,6 +4,8 @@ A three-minute guided interview using the Converse Browser SDK. The application 
 evidence to collect, records supported answers through an instant client tool, and owns the
 completion state.
 
+Hosted demo: <https://converse-interview-demo.ronan-e62.workers.dev>
+
 ## Setup
 
 1. Copy `.env.example` to `.env` and set `CONVERSE_API_KEY` to a persistent `ck_` key.
@@ -67,3 +69,21 @@ uv run scripts/run_evals.py --modality voice --repetitions 1
 ```
 
 Each command prints the Converse eval dashboard URL and exits nonzero unless the run passes.
+
+## Cloudflare deployment
+
+The Worker in `worker/` serves the static interview and implements the same configuration, health,
+and scoped-credential endpoints as the FastAPI app. Store the persistent key as a Worker secret,
+then deploy:
+
+```sh
+wrangler secret put CONVERSE_API_KEY
+wrangler deploy
+```
+
+Run both local test suites before deploying:
+
+```sh
+uv run pytest
+npm test
+```

@@ -1,0 +1,9 @@
+{
+  "name": "converse-interview-demo-worker",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node --test tests/test_worker.mjs",
+    "deploy": "wrangler deploy"
+  }
+}

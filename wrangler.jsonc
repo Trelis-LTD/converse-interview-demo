@@ -1,0 +1,14 @@
+{
+  "name": "converse-interview-demo",
+  "main": "worker/index.js",
+  "compatibility_date": "2026-08-31",
+  "workers_dev": true,
+  "vars": {
+    "CONVERSE_API_BASE_URL": "https://converse.trelis.com"
+  },
+  "assets": {
+    "directory": "./static",
+    "binding": "ASSETS",
+    "run_worker_first": true
+  }
+}

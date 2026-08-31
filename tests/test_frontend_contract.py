@@ -14,3 +14,5 @@ def test_frontend_uses_current_converse_lifecycle_contract() -> None:
     assert "session_end" in app
     assert "requestWrapUp" in app
     assert "detail.turn_id" in app
+    assert "text_delta" in app
+    assert "event.detail.delta" in app

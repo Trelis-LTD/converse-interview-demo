@@ -48,8 +48,8 @@ function renderFields() {
   }).join('');
 }
 
-function addTurn(role, text, detail = {}) {
-  if (!text || !text.trim()) return;
+function addTurn(role, text, detail = {}, {append = false} = {}) {
+  if (typeof text !== 'string' || !text.length || (role === 'user' && !text.trim())) return;
   if (!hasTranscript) {
     transcript.innerHTML = '';
     hasTranscript = true;
@@ -59,7 +59,9 @@ function addTurn(role, text, detail = {}) {
     ? String(detail.turn_id || detail.barge_seq || '')
     : null;
   if (turnKey && assistantTurns.has(turnKey)) {
-    assistantTurns.get(turnKey).querySelector('.turn-text').textContent = text;
+    const content = assistantTurns.get(turnKey).querySelector('.turn-text');
+    content.textContent = append ? `${content.textContent}${text}` : text;
+    transcript.scrollTop = transcript.scrollHeight;
     return;
   }
 
@@ -153,6 +155,9 @@ async function startInterview() {
     });
 
     client.addEventListener('asr', event => addTurn('user', event.detail.text));
+    client.addEventListener('text_delta', event => {
+      addTurn('assistant', event.detail.delta, event.detail, {append: true});
+    });
     client.addEventListener('utterance', event => addTurn('assistant', event.detail.text, event.detail));
     client.addEventListener('warming_up', () => setStatus('Warming up', 'active'));
     client.addEventListener('listening', () => {
