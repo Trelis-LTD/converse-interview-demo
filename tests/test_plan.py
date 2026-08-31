@@ -14,6 +14,8 @@ def test_instructions_make_the_application_completion_contract_explicit() -> Non
     instructions = build_instructions(load_plan())
 
     assert "record_plan_field" in instructions
+    assert "one record_plan_field call" in instructions
+    assert "all supported fields" in instructions
     assert "missing_required" in instructions
     assert "every required field has been recorded" in instructions
     assert "do not ask a follow-up" in instructions
@@ -36,6 +38,12 @@ def test_tool_accepts_only_configured_fields() -> None:
     assert tool["expected_duration"] == "instant"
     assert tool["read_only"] is False
     assert tool["status_label"] == "interview notes"
-    assert tool["parameters"]["properties"]["field"]["enum"] == [
+    parameters = tool["parameters"]
+    assert parameters["required"] == ["updates"]
+    updates = parameters["properties"]["updates"]
+    assert updates["type"] == "array"
+    assert updates["minItems"] == 1
+    assert updates["items"]["properties"]["field"]["enum"] == [
         field["key"] for field in plan["fields"]
     ]
+    assert updates["items"]["required"] == ["field", "value"]

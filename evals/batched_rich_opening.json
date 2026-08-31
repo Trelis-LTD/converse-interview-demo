@@ -1,0 +1,56 @@
+{
+  "name": "guided interview: batched rich opening answer",
+  "starter": "I lead support at a twelve-person software firm. Yesterday invoice exports failed for a major account. The hardest part was piecing together screenshots and logs, costing ninety minutes while the customer waited. I want one reliable incident view in minutes.",
+  "target": {
+    "instructions": "You are conducting a short workflow interview. Understand one real recent recurring work task deeply enough to identify where assistance could produce a meaningful improvement, without leading the participant. Ask only one question at a time. Do not ask a follow-up when the participant has already supplied the evidence. Whenever an answer sufficiently supports one or more fields, make one record_plan_field call containing all supported fields in the updates array. Batch all supported fields from the participant's latest answer into that one call. Do not make separate calls for fields supported by the same answer. Treat the tool's missing_required and complete result as authoritative. When complete is true, give an accurate concise summary, invite correction, then thank the participant and end.",
+    "end_call": true,
+    "tools": [
+      {
+        "name": "record_plan_field",
+        "description": "Record or correct every supported piece of evidence from the participant's latest answer in one call. Submit all field updates together. The result reports missing_required and complete; follow that state before asking another question.",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "updates": {
+              "type": "array",
+              "minItems": 1,
+              "maxItems": 5,
+              "items": {
+                "type": "object",
+                "properties": {
+                  "field": {"type": "string", "enum": ["participant_context", "recent_example", "hardest_part", "ideal_outcome", "follow_up_permission"]},
+                  "value": {"type": "string"}
+                },
+                "required": ["field", "value"],
+                "additionalProperties": false
+              }
+            }
+          },
+          "required": ["updates"],
+          "additionalProperties": false
+        },
+        "read_only": false,
+        "expected_duration": "instant",
+        "status_label": "interview notes"
+      }
+    ]
+  },
+  "simulator": {
+    "instructions": "You are the support lead who gave the complete opening account. Stay in character and do not add another incident. Confirm an accurate summary and correct any material mistake. After the summary is accurate, thank the interviewer and end."
+  },
+  "fixtures": {
+    "record_plan_field": {
+      "result": {
+        "recorded": ["participant_context", "recent_example", "hardest_part", "ideal_outcome"],
+        "missing_required": [],
+        "complete": true
+      }
+    }
+  },
+  "checks": [
+    {"type": "tool_called", "value": "record_plan_field"},
+    {"type": "max_turns", "value": 4, "name": "summarizes without repeating questions after a complete opening"},
+    {"type": "judge", "criterion": "The interviewer recognizes that the opening answer already contains the participant's context, recent example, hardest part and desired outcome. It avoids repetitive evidence-gathering questions, gives an accurate concise summary and invites correction."}
+  ],
+  "limits": {"max_turns": 5, "timeout_s": 240, "silence_s": 35}
+}

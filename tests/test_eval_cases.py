@@ -1,6 +1,7 @@
 from pathlib import Path
 
 from converse_sdk.evals import load_cases, validate_case
+from scripts.run_evals import batch_contract_error
 
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
@@ -11,7 +12,7 @@ def test_all_eval_cases_are_valid_and_cover_expected_scenarios() -> None:
 
     assert len(cases) == 5
     assert {case["name"] for case in cases} == {
-        "guided interview: rich opening answer",
+        "guided interview: batched rich opening answer",
         "guided interview: terse participant",
         "guided interview: participant correction",
         "guided interview: optional question refused",
@@ -27,6 +28,11 @@ def test_every_eval_proves_required_fields_are_recorded() -> None:
                 check["type"] == "tool_called" and check["value"] == "end_call"
                 for check in checks
             )
+        elif case["name"] == "guided interview: batched rich opening answer":
+            assert any(
+                check["type"] == "tool_called" and check["value"] == "record_plan_field"
+                for check in checks
+            )
         else:
             assert {
                 check["value"] for check in checks if check["type"] == "fixture_complete"
@@ -38,6 +44,29 @@ def test_every_eval_proves_required_fields_are_recorded() -> None:
         assert tool["expected_duration"] == "instant"
         assert tool["status_label"] == "interview notes"
         assert case["target"]["end_call"] is True
+
+
+def test_batch_eval_requires_one_call_containing_every_required_field() -> None:
+    valid_attempt = {
+        "case_name": "guided interview: batched rich opening answer",
+        "events": [{
+            "side": "target",
+            "type": "tool_call",
+            "name": "record_plan_field",
+            "args": {"updates": [
+                {"field": "participant_context", "value": "Support lead"},
+                {"field": "recent_example", "value": "Invoice export incident"},
+                {"field": "hardest_part", "value": "Piecing together evidence"},
+                {"field": "ideal_outcome", "value": "One incident view"},
+            ]},
+        }],
+    }
+
+    assert batch_contract_error(valid_attempt) is None
+    valid_attempt["events"].append(valid_attempt["events"][0])
+    assert batch_contract_error(valid_attempt) == (
+        "expected at most one batched field call per participant turn"
+    )
 
 
 def test_every_starter_fits_the_voice_greeting_limit() -> None:

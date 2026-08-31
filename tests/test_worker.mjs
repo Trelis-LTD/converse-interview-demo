@@ -10,7 +10,11 @@ test('public config matches the guided interview contract', () => {
   assert.equal(config.required_fields.length, 4);
   assert.equal(config.tool.name, 'record_plan_field');
   assert.equal(config.tool.status_label, 'interview notes');
+  assert.deepEqual(config.tool.parameters.required, ['updates']);
+  assert.equal(config.tool.parameters.properties.updates.type, 'array');
+  assert.equal(config.tool.parameters.properties.updates.minItems, 1);
   assert.match(config.instructions, /immediately call end_call/);
+  assert.match(config.instructions, /one record_plan_field call/);
 });
 
 

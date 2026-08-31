@@ -1,8 +1,8 @@
 # Converse interview demo
 
 A three-minute guided interview using the Converse Browser SDK. The application defines the
-evidence to collect, records supported answers through an instant client tool, and owns the
-completion state.
+evidence to collect, records all evidence from each answer through one instant client-tool call,
+and owns the completion state.
 
 Hosted demo: <https://converse-interview-demo.ronan-e62.workers.dev>
 

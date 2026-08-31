@@ -16,3 +16,7 @@ def test_frontend_uses_current_converse_lifecycle_contract() -> None:
     assert "detail.turn_id" in app
     assert "text_delta" in app
     assert "event.detail.delta" in app
+    assert "args.updates" in app
+    assert "for (const update of updates)" in app
+    assert "recorded: recordedFields" in app
+    assert "requestAnimationFrame(renderFields)" in app

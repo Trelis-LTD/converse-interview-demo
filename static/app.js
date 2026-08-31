@@ -175,23 +175,35 @@ async function startInterview() {
     client.addEventListener('tool_call', event => {
       const {id, name, args} = event.detail;
       if (name !== config.tool.name) return;
-      const known = config.fields.some(field => field.key === args.field);
-      if (!known || typeof args.value !== 'string' || !args.value.trim()) {
+      const updates = args.updates;
+      const knownFields = new Set(config.fields.map(field => field.key));
+      const valid = Array.isArray(updates) && updates.length > 0 && updates.every(update => (
+        update
+        && knownFields.has(update.field)
+        && typeof update.value === 'string'
+        && update.value.trim()
+      ));
+      if (!valid) {
         client.sendToolResult(
           id,
-          {error: 'field must be known and value must be non-empty text'},
+          {error: 'updates must contain known fields with non-empty text values'},
           {outcome: 'failed', verified: false},
         );
         return;
       }
-      answers[args.field] = args.value.trim();
-      renderFields();
+
+      const recordedFields = [];
+      for (const update of updates) {
+        answers[update.field] = update.value.trim();
+        if (!recordedFields.includes(update.field)) recordedFields.push(update.field);
+      }
       const missing = config.required_fields.filter(field => !answers[field]);
       client.sendToolResult(
         id,
-        {recorded: args.field, missing_required: missing, complete: missing.length === 0},
+        {recorded: recordedFields, missing_required: missing, complete: missing.length === 0},
         {outcome: 'succeeded', verified: true},
       );
+      requestAnimationFrame(renderFields);
     });
     client.addEventListener('session_end_requested', () => {
       endButton.disabled = true;

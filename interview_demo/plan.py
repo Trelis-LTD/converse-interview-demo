@@ -35,8 +35,10 @@ def build_instructions(plan: dict[str, Any]) -> str:
         "Collect the evidence below through a concise, natural conversation. Choose the order "
         "based on what the participant says. Ask only one question at a time. Clarify vague or "
         "very short answers, but do not ask a follow-up when the participant has already supplied "
-        "the evidence. Do not read the field list aloud. Whenever an answer is sufficiently "
-        "supported, call record_plan_field. Update a field if later evidence changes it. Treat a "
+        "the evidence. Do not read the field list aloud. Whenever an answer sufficiently supports "
+        "one or more fields, make one record_plan_field call containing all supported fields in "
+        "the updates array. Batch all supported fields from the participant's latest answer into "
+        "that one call. Update a field if later evidence changes it. Treat a "
         "refusal to answer respectfully and do not pressure the participant. Do not claim the "
         "interview is complete until every required field has been recorded. Treat the tool's "
         "missing_required and complete result as the authoritative completion state. When complete "
@@ -55,22 +57,39 @@ def build_tool(plan: dict[str, Any]) -> dict[str, Any]:
     return {
         "name": "record_plan_field",
         "description": (
-            "Record or correct one supported piece of interview evidence. The result reports "
+            "Record or correct every supported piece of evidence from the participant's latest "
+            "answer in one call. Submit all field updates together. The result reports "
             "missing_required and complete; follow that state before asking another question."
         ),
         "parameters": {
             "type": "object",
             "properties": {
-                "field": {
-                    "type": "string",
-                    "enum": [str(field["key"]) for field in plan["fields"]],
-                },
-                "value": {
-                    "type": "string",
-                    "description": "Concise evidence in the participant's own terms.",
+                "updates": {
+                    "type": "array",
+                    "minItems": 1,
+                    "maxItems": len(plan["fields"]),
+                    "description": (
+                        "All supported or corrected fields from the participant's latest answer."
+                    ),
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "field": {
+                                "type": "string",
+                                "enum": [str(field["key"]) for field in plan["fields"]],
+                            },
+                            "value": {
+                                "type": "string",
+                                "description": "Concise evidence in the participant's own terms.",
+                            },
+                        },
+                        "required": ["field", "value"],
+                        "additionalProperties": False,
+                    },
                 },
             },
-            "required": ["field", "value"],
+            "required": ["updates"],
+            "additionalProperties": False,
         },
         "read_only": False,
         "expected_duration": "instant",
