@@ -1,10 +1,10 @@
 {
-  "name": "converse-interview-demo",
+  "name": "dialt-interview-demo",
   "main": "worker/index.js",
   "compatibility_date": "2026-08-31",
   "workers_dev": true,
   "vars": {
-    "CONVERSE_API_BASE_URL": "https://converse.trelis.com"
+    "CONVERSE_API_BASE_URL": "https://dialt.com"
   },
   "assets": {
     "directory": "./static",

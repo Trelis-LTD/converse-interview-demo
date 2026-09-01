@@ -94,7 +94,7 @@ async function createSession(env) {
     return jsonResponse({detail: 'CONVERSE_API_KEY is not configured on the server.'}, 503);
   }
 
-  const baseUrl = String(env.CONVERSE_API_BASE_URL || 'https://converse.trelis.com').replace(/\/$/, '');
+  const baseUrl = String(env.CONVERSE_API_BASE_URL || 'https://dialt.com').replace(/\/$/, '');
   const sessionId = `short-interview-${crypto.randomUUID().replaceAll('-', '').slice(0, 16)}`;
   let response;
   try {
@@ -107,12 +107,12 @@ async function createSession(env) {
       body: JSON.stringify({session_id: sessionId}),
     });
   } catch {
-    return jsonResponse({detail: 'Could not reach the Converse credential service.'}, 502);
+    return jsonResponse({detail: 'Could not reach the Dialt credential service.'}, 502);
   }
 
   const text = await response.text();
   if (!response.ok) {
-    let detail = 'Converse rejected the session credential request.';
+    let detail = 'Dialt rejected the session credential request.';
     try {
       const body = JSON.parse(text);
       detail = body.error || body.detail || detail;

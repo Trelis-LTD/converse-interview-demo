@@ -65,7 +65,21 @@ wheels = [
 ]
 
 [[package]]
-name = "converse-interview-demo"
+name = "converse-sdk"
+version = "0.14.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "numpy", version = "2.4.6", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.12'" },
+    { name = "numpy", version = "2.5.2", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.12'" },
+    { name = "websockets" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/50/6c/f136ba0d6aae78a034add70d2d859067e4379ba83b26dba20cd2d07f21c5/converse_sdk-0.14.0.tar.gz", hash = "sha256:a2d5fe42a9148aa0c4ab58ea4c30dac1288f293d66f438b957281f71e9cac979", size = 38861, upload-time = "2026-08-30T16:47:24.099Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/ba/b0/2746117190fb6733ec29133501d8782fdecd570fea40509f50331f8212b8/converse_sdk-0.14.0-py3-none-any.whl", hash = "sha256:0d9fa4a180c208951168e29bd5cc18102ec9b97e332678a7bb42ea8046e4652c", size = 33551, upload-time = "2026-08-30T16:47:23.311Z" },
+]
+
+[[package]]
+name = "dialt-interview-demo"
 version = "0.1.0"
 source = { editable = "." }
 dependencies = [
@@ -95,20 +109,6 @@ requires-dist = [
 dev = [
     { name = "pytest", specifier = ">=8.0" },
     { name = "pytest-asyncio", specifier = ">=0.23" },
-]
-
-[[package]]
-name = "converse-sdk"
-version = "0.14.0"
-source = { registry = "https://pypi.org/simple" }
-dependencies = [
-    { name = "numpy", version = "2.4.6", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.12'" },
-    { name = "numpy", version = "2.5.2", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.12'" },
-    { name = "websockets" },
-]
-sdist = { url = "https://files.pythonhosted.org/packages/50/6c/f136ba0d6aae78a034add70d2d859067e4379ba83b26dba20cd2d07f21c5/converse_sdk-0.14.0.tar.gz", hash = "sha256:a2d5fe42a9148aa0c4ab58ea4c30dac1288f293d66f438b957281f71e9cac979", size = 38861, upload-time = "2026-08-30T16:47:24.099Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/ba/b0/2746117190fb6733ec29133501d8782fdecd570fea40509f50331f8212b8/converse_sdk-0.14.0-py3-none-any.whl", hash = "sha256:0d9fa4a180c208951168e29bd5cc18102ec9b97e332678a7bb42ea8046e4652c", size = 33551, upload-time = "2026-08-30T16:47:23.311Z" },
 ]
 
 [[package]]

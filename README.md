@@ -1,10 +1,10 @@
-# Converse interview demo
+# Dialt interview demo
 
-A three-minute guided interview using the Converse Browser SDK. The application defines the
+A three-minute guided interview using the Dialt Browser SDK. The application defines the
 evidence to collect, records all evidence from each answer through one instant client-tool call,
 and owns the completion state.
 
-Hosted demo: <https://converse-interview-demo.ronan-e62.workers.dev>
+Hosted demo: <https://dialt-interview-demo.ronan-e62.workers.dev>
 
 ## Setup
 
@@ -24,7 +24,7 @@ Hosted demo: <https://converse-interview-demo.ronan-e62.workers.dev>
 4. Open <http://127.0.0.1:8010> and select **Start interview**.
 
 The persistent API key stays on the backend. The browser receives a short-lived credential bound
-to one generated session ID. The interview enables Converse's managed completion flow so the
+to one generated session ID. The interview enables Dialt's managed completion flow so the
 assistant can give its final summary and farewell before the session closes cleanly.
 
 ## Interview
@@ -46,7 +46,7 @@ Run the local test suite:
 uv run pytest
 ```
 
-## Converse evals
+## Dialt evals
 
 The `evals/` directory covers five scenarios:
 
@@ -68,7 +68,7 @@ Then validate the same behavior end to end in voice:
 uv run scripts/run_evals.py --modality voice --repetitions 1
 ```
 
-Each command prints the Converse eval dashboard URL and exits nonzero unless the run passes.
+Each command prints the Dialt eval dashboard URL and exits nonzero unless the run passes.
 
 ## Cloudflare deployment
 
