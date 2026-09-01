@@ -140,7 +140,7 @@ async function startInterview() {
     if (!response.ok) throw new Error(credential.detail || `Session setup failed (${response.status}).`);
 
     client = new ConverseClient({
-      url: 'wss://converse.trelis.com/ws',
+      url: 'wss://dialt.com/ws',
       sessionId: credential.session_id,
       apiKey: credential.api_key,
       mode: {

@@ -18,7 +18,7 @@ load_dotenv()
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 STATIC_DIR = PROJECT_ROOT / "static"
 
-app = FastAPI(title="Converse interview demo")
+app = FastAPI(title="Dialt interview demo")
 app.mount("/static", StaticFiles(directory=STATIC_DIR), name="static")
 
 
@@ -46,7 +46,7 @@ async def create_session() -> dict:
             detail="CONVERSE_API_KEY is not configured on the server.",
         )
 
-    base_url = os.getenv("CONVERSE_API_BASE_URL", "https://converse.trelis.com").rstrip("/")
+    base_url = os.getenv("CONVERSE_API_BASE_URL", "https://dialt.com").rstrip("/")
     session_id = f"short-interview-{uuid.uuid4().hex[:16]}"
     try:
         async with httpx.AsyncClient(timeout=20) as client:
@@ -58,7 +58,7 @@ async def create_session() -> dict:
     except httpx.HTTPError as exc:
         raise HTTPException(
             status_code=502,
-            detail="Could not reach the Converse credential service.",
+            detail="Could not reach the Dialt credential service.",
         ) from exc
 
     if response.is_error:
@@ -68,6 +68,6 @@ async def create_session() -> dict:
             upstream_detail = None
         raise HTTPException(
             status_code=response.status_code,
-            detail=str(upstream_detail or "Converse rejected the session credential request."),
+            detail=str(upstream_detail or "Dialt rejected the session credential request."),
         )
     return response.json()

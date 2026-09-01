@@ -23,7 +23,7 @@ def main() -> None:
         raise SystemExit("CONVERSE_API_KEY is required in .env")
     client = EvalsClient(
         api_key,
-        base_url=os.getenv("CONVERSE_API_BASE_URL", "https://converse.trelis.com"),
+        base_url=os.getenv("CONVERSE_API_BASE_URL", "https://dialt.com"),
     )
     run = client.get_run(args.run_id)
     failures = [

@@ -71,7 +71,7 @@ def main() -> None:
     ]
     client = EvalsClient(
         api_key,
-        base_url=os.getenv("CONVERSE_API_BASE_URL", "https://converse.trelis.com"),
+        base_url=os.getenv("CONVERSE_API_BASE_URL", "https://dialt.com"),
     )
     try:
         cases = client.upsert_cases(documents)
